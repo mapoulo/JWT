@@ -1,0 +1,27 @@
+package gateway.service.project;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.context.annotation.Bean;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import reactor.core.publisher.Mono;
+
+@SpringBootApplication
+@OpenAPIDefinition
+public class GatewayApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(GatewayApplication.class, args);
+	}
+	
+	@Bean
+	public KeyResolver keyResolver() {
+		return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
+	}
+
+}
+
+
+

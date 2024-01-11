@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;identity.services.jwt.Config.CustomeUserDetails&apos; to &apos;CustomUserDetails&apos;&#x0D;&#x0A;- Original project: &apos;IDENTITY-SERVICE&apos;&#x0D;&#x0A;- Original element: &apos;identity.services.jwt.Config.CustomeUserDetails&apos;&#x0D;&#x0A;- Renamed element: &apos;identity.services.jwt.Config.CustomUserDetails&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;CustomeUserDetails&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;identity.services.jwt.Config{CustomeUserDetails.java[CustomeUserDetails" matchStrategy="1" name="CustomUserDetails" qualified="false" references="true" similarDeclarations="false" stamp="1693746142248" textual="false" version="1.0"/>
+</session>

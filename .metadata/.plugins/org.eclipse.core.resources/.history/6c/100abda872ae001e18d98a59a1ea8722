@@ -1,0 +1,69 @@
+package gateway.service.project;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.context.annotation.Bean;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import reactor.core.publisher.Mono;
+
+@SpringBootApplication
+@OpenAPIDefinition
+public class GatewayApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(GatewayApplication.class, args);
+	}
+	
+	////Group requests by remote IP address
+//	@Bean
+//	public KeyResolver keyResolver() {
+//		return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
+//	}
+	
+	
+	
+	//Group requests by userId
+//	@Bean
+//	public KeyResolver keyResolver() {
+//	    return exchange -> Mono.just(exchange.getRequest().getHeaders().getFirst("Id"));
+//	}
+	
+	
+	//Checking all info in the request header
+//	  @Bean
+//	    public KeyResolver keyResolver() {
+//	        return exchange -> {
+//	            StringBuilder headerInfo = new StringBuilder();
+//
+//	            // Get all the headers from the incoming request
+//	            exchange.getRequest().getHeaders().forEach((key, value) ->
+//	                    headerInfo.append(key).append(": ").append(value).append("\n"));
+//                System.out.println(headerInfo.toString());
+//	            return Mono.just(headerInfo.toString());
+//	        };
+//	    }
+	  
+	  
+	  @Bean
+	    public KeyResolver keyResolver() {
+	        return exchange -> {
+	            String authorizationHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+	            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+	                String token = authorizationHeader.substring(7); // Extract token after "Bearer "
+
+	                // Use the token as the key
+	                return Mono.just(token);
+	            }
+
+	            // If the token is not found or not in the expected format, return a default key
+	            return Mono.just("defaultKey");
+	        };
+	    }
+
+}
+
+
+

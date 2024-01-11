@@ -1,0 +1,89 @@
+spring:
+ cloud:
+   gateway:
+     routes:
+       - id: laptop-service
+         uri: lb://laptop-service
+         predicates:
+           - Path=/laptop/**
+         filters:
+           - name: AuthenticationFilter
+           - name: AddResponseHeader
+             args:
+              name: X-Genre
+              value: Fantacy
+           - name: RequestRateLimiter
+             args:
+               '[redis-rate-limiter.replenishRate]': 20
+               '[redis-rate-limiter.burstCapacity]': 40
+               '[redis-rate-limiter.requestedTokens]': 1
+               
+               
+
+       - id: IDENTITY-SERVICE
+         uri: lb://IDENTITY-SERVICE
+         predicates:
+           - Path=/auth/**
+           
+       - id: swagger
+         uri: lb://swagger-service
+         predicates:
+            - Path=/swagger/**
+       - id: swagger-ui
+         uri: lb://swagger-service
+         predicates:
+            - Path=/swagger-ui.html
+       - id: v2-api-docs
+         uri: lb://swagger-service
+         predicates:
+            - Path=/v2/api-docs/**
+ data:
+    redis:
+      host: localhost
+      port: 16379 
+      password: mypass      
+          
+
+ application:
+   name: GATEWAY-SERVICE
+   
+ main:
+   web-application-type: reactive   
+ jmx:
+    enabled: true
+# main:
+#   web-application-type: none
+#   allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
+      
+server:
+  port: 9191     
+  
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*' 
+      base-path: "/management"  
+    jmx:
+      exposure:
+        include:
+        - '*' 
+           
+  endpoint:
+    health:
+      show-details: always 
+      probes:
+        enabled: true
+    
+          
+          
